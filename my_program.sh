@@ -4,14 +4,17 @@
 SEPERATOR="================================================================"
 
 function display_menu {
-
-    	    for index in `seq 0 $((${#options[@]}-1))`;
+	    local options=("$@")
+	    echo
+	    echo "$1"
+    	    for index in `seq 1 $((${#options[@]}-1))`;
     	    do
-    		echo "$((index+1))) ${options[$index]}"
+    		echo "$((index))) ${options[$index]}"
             done
 }
 
 function sub_menu {
+    echo $SEPERATOR
     echo "Menu 1_1 option list: "
     local PS3='Please select one choice: '
     local subs=("Option 1_1" "Option 1_2" "Back")
@@ -20,14 +23,16 @@ function sub_menu {
 	case $sub in
 	    "Option 1_1") 
 		echo "Sub 1_1"
-		display_menu "Menu 1_1 option list: " $subs 
+    	    	echo $SEPERATOR
+		display_menu "Menu 1_1 option list: " "${subs[@]}" 
 		;;
 	    "Option 1_2") 
 		echo "Sub 1_2"
-		display_menu "Menu 1_1 option list: " $subs
+    	    	echo $SEPERATOR
+		display_menu "Menu 1_1 option list: " "${subs[@]}"
 		;;
 	    "Back") 
-		echo "Back to previos menu..."
+		echo "Back to previous menu..."
 		echo $SEPERATOR 
 		break;;
 	    *) echo 
@@ -45,14 +50,14 @@ function main_menu {
     do
         case $opt in
             "Submenu 1")
-                #echo "you chose choice 1"
-    	    	echo $SEPERATOR
     	    	sub_menu
-	    	display_menu "Menu 1 option list: " $options
+    	    	echo $SEPERATOR
+	    	display_menu "Menu 1 option list: " "${options[@]}"
 		;;
             "Option 2")
                 echo "you chose choice 2"
-		display_menu "Menu 1 option list: " $options
+    	    	echo $SEPERATOR
+		display_menu "Menu 1 option list: " "${options[@]}"
                 ;; 
             "Quit")
     	    	echo "Are you sure to quit? Y/N?"
@@ -67,7 +72,7 @@ function main_menu {
     	    	    exit
     	    	fi
     	    	echo $SEPERATOR
-		display_menu "Menu 1 option list: " $options
+		display_menu "Menu 1 option list: " "${options[@]}"
             	;;
             *) 
 		echo "invalid option $REPLY"
